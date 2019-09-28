@@ -65,4 +65,24 @@ describe("Utilities - Roll", function () {
         });
     });
 
+    it("should be able to roll multiple dice and subtract", function() {
+        const roll = Roll("d8+d12-5", {detailed: true});
+
+        expect(roll).to.eql({
+            resultsPerRoll: [[1], [4]],
+            rollDetailed: "(1) + (4) - 5",
+            total: 0
+        });
+    });
+
+    it("should be able to roll multiple dice and multiply", function() {
+        const roll = Roll("d20*3+5", {detailed: true});
+
+        expect(roll).to.eql({
+            resultsPerRoll: [[1]],
+            rollDetailed: "(1) * 3 + 5",
+            total: 8
+        });
+    });
+
 });
