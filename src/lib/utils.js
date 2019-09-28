@@ -48,7 +48,7 @@ export const Roll = (expression, opts) => {
         //Example, given expression was 3D6+5
 
         return {
-            resultsPerRoll,    // e.g. [4, 1, 1] -- The three dice rolls of 3d6
+            resultsPerRoll,    // e.g. [[4, 1, 1]] -- The three dice rolls of 3d6
             rollDetailed: resolveRolls.join(' '), // e.g. (6) + 5  -- The resolved rolls
             total: eval(resolveRolls.join('')) // e.g. 11 -- The final total
         };
