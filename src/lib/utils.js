@@ -8,7 +8,7 @@ const DiceRandom = new Chance(DEFAULT_SEED);
 
 const DiceExpression = /^\d*d\d{1,20}$/img;
 const SingleDieExpression = /^d\d{1,20}$/img;
-const BasicMathDelimeters = /([\+\-\*\/])/g;
+const BasicMathDelimiters = /([\+\-\*\/])/g;
 
 /**
  * Rolls the expression and returns a single result.
@@ -20,7 +20,7 @@ export const Roll = (expression, opts) => {
     const detailed = get(opts, "detailed", false);
 
     // Split by + - * / but keep the delimeter
-    const split = expression.split(BasicMathDelimeters);
+    const split = expression.split(BasicMathDelimiters);
 
     // Resolve all XdX e.g. 2d8 expressions using Chance library
     let resolveRolls = [];
