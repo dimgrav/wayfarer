@@ -1,10 +1,13 @@
 import { isEqual, sum, get } from "lodash";
 import Chance from "chance";
 
+const DEFAULT_SEED = process.env.NODE_ENV === "test" ? "FIXED_SEED" : undefined;
 
-const DiceRandom = new Chance();
+const DiceRandom = new Chance(DEFAULT_SEED);
+
 
 const DiceExpression = /^\d*d\d{1,20}$/img;
+const SingleDieExpression = /^d\d{1,20}$/img;
 const BasicMathDelimeters = /([\+\-\*\/])/g;
 
 /**
@@ -24,8 +27,10 @@ export const Roll = (expression, opts) => {
     let resultsPerRoll = [];
 
     for(let p of split) {
-        if (DiceExpression.test(p)) {
-            const results = DiceRandom.rpg(p.toLowerCase());
+        if (DiceExpression.test(p) || SingleDieExpression.test(p)) {
+            let expression = (SingleDieExpression.test(p)) ? `1${p.toLowerCase()}` : p.toLowerCase();
+            const results = DiceRandom.rpg(expression);
+
             resultsPerRoll.push(results);
             resolveRolls.push(`(${sum(results)})`); // * Adding a parens
             // ... so that it can be displayed properly if detailed
