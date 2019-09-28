@@ -4,6 +4,9 @@ import Chance from "chance";
 
 const DiceRandom = new Chance();
 
+const DiceExpression = /^\d*d\d{1,20}$/img;
+const BasicMathDelimeters = /([\+\-\*\/])/g;
+
 /**
  * Rolls the expression and returns a single result.
  *
@@ -11,16 +14,16 @@ const DiceRandom = new Chance();
  */
 export const Roll = (expression) => {
     // Split by + - * / but keep the delimeter
-    const split = expression.split(/([\+\-\*\/])/g);
+    const split = expression.split(BasicMathDelimeters);
 
-    // Resolve all XdX e.g. 2d8 expressions using Change library
+    // Resolve all XdX e.g. 2d8 expressions using Chance library
     let resolveRolls = [];
 
     for(let p of split) {
-        if (/^\d*d\d{1,20}$/img.test(p)) {
+        if (DiceExpression.test(p)) {
             resolveRolls.push(DiceRandom.rpg(p.toLowerCase(), {sum: true}));
         } else {
-            resolveRolls.push(p); // ... else we keep it
+            resolveRolls.push(p);
         }
     }
 
