@@ -1,5 +1,6 @@
 import { isEqual, sum, get } from "lodash";
 import Chance from "chance";
+import { evaluate } from "mathjs";
 
 const DEFAULT_SEED = process.env.NODE_ENV === "test" ? "FIXED_SEED" : undefined;
 
@@ -42,32 +43,34 @@ export const Roll = (expression, opts) => {
     }
 
     // Evaluate the fixed expression that remains (with rolls resolved)
-    // TODO: Replace eval with something that evaulates only math expressions for security reasons.
 
     if (detailed) {
         //Example, given expression was 3D6+5
 
         return {
             resultsPerRoll,    // e.g. [[4, 1, 1]] -- The three dice rolls of 3d6
-            rollDetailed: resolveRolls.join(' '), // e.g. (6) + 5  -- The resolved rolls
-            total: eval(resolveRolls.join('')) // e.g. 11 -- The final total
+            rollDetailed: resolveRolls.join(" "), // e.g. (6) + 5  -- The resolved rolls
+            total: evaluate(resolveRolls.join("")) // e.g. 11 -- The final total
         };
     } else {
-        return eval(resolveRolls.join('')); // e.g. 11 -- Only the final total
+        return evaluate(resolveRolls.join("")); // e.g. 11 -- Only the final total
     }
 };
 
 
+/**
+ * Map component-passed properties to react-navigation prop params
+ * 
+ * @param {Object} props the current component props
+ * @param {Onject} prevProps the previus component props
+ * @param {func} getPropsToMap function that returns the props to map object
+ */
 export const mapPropsToNavOptions = (props, prevProps, getPropsToMap) => {
-
-    if (!props) {
-        return;
-    }
+    if (!props) return;
 
     const propsToMap = getPropsToMap(props);
 
     if (!prevProps || !isEqual(getPropsToMap(prevProps), propsToMap)) {
         props.navigation.setParams(propsToMap);
     }
-
 };
